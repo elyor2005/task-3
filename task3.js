@@ -1,36 +1,31 @@
 import express from "express";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
-// Helper: calculate gcd
-function gcd(a, b) {
-  return b === 0 ? a : gcd(b, a % b);
-}
-
-// Helper: calculate lcm
-function lcm(a, b) {
-  return Math.abs(a * b) / gcd(a, b);
-}
-
-// Route with email-friendly URL
-app.get("/md_smith2_mail_srv_com", (req, res) => {
-  let { x, y } = req.query;
-
-  // Convert to numbers
-  x = Number(x);
-  y = Number(y);
-
-  // Check if valid natural numbers
+// Function to calculate LCM
+function lcm(x, y) {
   if (!Number.isInteger(x) || !Number.isInteger(y) || x <= 0 || y <= 0) {
-    res.send("NaN");
-    return;
+    return NaN;
   }
+  const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
+  return (x * y) / gcd(x, y);
+}
 
-  // Return LCM as plain string
-  res.send(String(lcm(x, y)));
+// Route for your email
+app.get("/elyorabdufattokhov_gmail_com", (req, res) => {
+  const x = parseInt(req.query.x, 10);
+  const y = parseInt(req.query.y, 10);
+
+  const result = lcm(x, y);
+
+  if (isNaN(result)) {
+    res.send("NaN");
+  } else {
+    res.send(result.toString());
+  }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
