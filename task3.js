@@ -20,12 +20,12 @@ app.get("/elyorabdufattokhov_gmail_com", (req, res) => {
   const result = lcm(x, y);
 
   if (isNaN(result)) {
-    res.send("NaN");
+    res.type("text/plain").send("NaN");
   } else {
-    res.send(result.toString());
+    res.type("text/plain").send(result.toString());
   }
 });
 
 app.listen(port, () => {
-  console.log(`Server running on https://task-3-app.onrender.com:${port}`);
+  console.log(`Server running on port ${port}`);
 });
