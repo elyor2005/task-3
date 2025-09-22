@@ -27,5 +27,5 @@ app.get("/elyorabdufattokhov_gmail_com", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`Server running on https://task-3-app.onrender.com:${port}`);
 });
