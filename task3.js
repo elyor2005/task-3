@@ -3,29 +3,37 @@ import express from "express";
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Function to calculate LCM with BigInt
+// GCD with BigInt
+function gcd(a, b) {
+  return b === 0n ? a : gcd(b, a % b);
+}
+
+// LCM with BigInt
 function lcm(x, y) {
   try {
     const a = BigInt(x);
     const b = BigInt(y);
 
-    if (a === 0n && b === 0n) return 0n;
+    // If client expects LCM(0, n) = n
+    if (a === 0n && b === 0n) return NaN;
+    if (a === 0n) return b;
+    if (b === 0n) return a;
 
-    const gcd = (m, n) => (n === 0n ? m : gcd(n, m % n));
     return (a * b) / gcd(a, b);
-  } catch (err) {
+  } catch {
     return NaN;
   }
 }
 
 // Route for your email
 app.get("/elyorabdufattokhov_gmail_com", (req, res) => {
-  const x = req.query.x;
-  const y = req.query.y;
+  const { x, y } = req.query;
 
   const result = lcm(x, y);
 
-  if (isNaN(result)) {
+  if (typeof result === "number" && isNaN(result)) {
+    res.send("NaN");
+  } else if (result === NaN) {
     res.send("NaN");
   } else {
     res.send(result.toString());
@@ -33,5 +41,5 @@ app.get("/elyorabdufattokhov_gmail_com", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running on https://task-3-app.onrender.com:${port}`);
+  console.log(`Server running on port ${port}`);
 });
